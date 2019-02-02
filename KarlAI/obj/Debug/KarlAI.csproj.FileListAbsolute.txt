@@ -1,0 +1,7 @@
+D:\KarlAI\KarlAI\KarlAI\bin\Debug\KarlAI.exe.config
+D:\KarlAI\KarlAI\KarlAI\bin\Debug\KarlAI.exe
+D:\KarlAI\KarlAI\KarlAI\bin\Debug\KarlAI.pdb
+D:\KarlAI\KarlAI\KarlAI\obj\Debug\KarlAI.csprojAssemblyReference.cache
+D:\KarlAI\KarlAI\KarlAI\obj\Debug\KarlAI.csproj.CoreCompileInputs.cache
+D:\KarlAI\KarlAI\KarlAI\obj\Debug\KarlAI.exe
+D:\KarlAI\KarlAI\KarlAI\obj\Debug\KarlAI.pdb
