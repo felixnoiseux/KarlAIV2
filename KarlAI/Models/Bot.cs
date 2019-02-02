@@ -96,10 +96,16 @@ namespace KarlAI.Models
                 {
                     if (demandecut[i] == "spotify")
                     {
-                        //processStartInfo.WorkingDirectory = @"%C:\Users\"+ username + @"\AppData\Roaming\Spotify%";
 
-                        //processStartInfo.FileName = @"Spotify.exe";
-                        Process.Start("C:\\Users\\" + username + "\\AppData\\Roaming\\Spotify\\Spotify.exe");
+                        try
+                        {
+                            Process.Start("C:\\Users\\" + username + "\\AppData\\Roaming\\Spotify\\Spotify.exe");
+                        }
+                        catch(System.ComponentModel.Win32Exception)
+                        {
+                            Console.WriteLine("Vous n'avez pas Spotify d'installer.");
+                        }
+                        
                     }
                     if (demandecut[i] == "google")
                     {

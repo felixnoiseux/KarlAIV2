@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CognitiveServices.Speech;
+using Microsoft.CognitiveServices.Speech.Audio;
 using KarlAI.Models;
 
 namespace KarlAI
@@ -24,7 +26,7 @@ namespace KarlAI
                                              "\n Exemple : Hey Karl Demarre google.com \n" +
                                              "2.|Help| Affiche les commandes que carl peut executer\n" +
                                              "3. |Exit| Quitte l'IA\n");
-
+            //test
     
             while(true)
             {
