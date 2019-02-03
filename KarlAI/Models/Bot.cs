@@ -94,7 +94,7 @@ namespace KarlAI.Models
             {
                 for (int i = 0; i <= demandecut.Length - 1; i++)
                 {
-                    if (demandecut[i] == "spotify")
+                    if (demandecut[i].ToLower() == "spotify")
                     {
 
                         try
@@ -107,9 +107,9 @@ namespace KarlAI.Models
                         }
                         
                     }
-                    if (demandecut[i] == "google")
+                    if (demandecut[i].ToLower() == "google")
                     {
-                        Process.Start("chrome.exe");
+                        Process.Start("http://www.google.com");
                     }
                 }
 
