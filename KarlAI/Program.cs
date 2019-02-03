@@ -82,39 +82,37 @@ namespace KarlAI
             Console.ReadLine();
 
             ////START
-            Console.WriteLine("Bonjour , bienvenue dans KarlAI \n" +
-                                             "1.|Hey Karl| suivi de l'instruction \n" +
-                                             "\n Exemple : Hey Karl Demarre google.com \n" +
-                                             "2.|Help| Affiche les commandes que carl peut executer\n" +
-                                             "3. |Exit| Quitte l'IA\n");
+            Console.WriteLine("Welcome on KarlAI \n" +
+                                             "1.|Hey Karl| followed by the instruction \n" +
+                                             "\n\t Exemple : Hey Karl open google.com \n" +
+                                             "\t\t : Hey Karl open spotify");
 
 
             while (true)
             {
-
-                //RecognizeSpeechAsync(wakeup , bot).Wait();
-                string informations = Console.ReadLine();
-                if (wakeup.Ecouter(informations))
-                {
-                    string commandes = wakeup.AvoirCommandes(informations);
-                    if (commandes == "")
-                    {
-                        commandes = wakeup.AffirmationPrecedente;
-                        wakeup.AffirmationPrecedente = "";
-                    }
-                    bot.GetMessage(commandes);
-                    string resultat = bot.Identifier();
-                    bot.Executer(resultat , wakeup);
-                }
+                RecognizeSpeechAsync(wakeup , bot).Wait();
+                //Code pour essayer Karl en mode console
+                #region CodeConsole
+                //string informations = Console.ReadLine();
+                //if (wakeup.Ecouter(informations))
+                //{
+                //    string commandes = wakeup.AvoirCommandes(informations);
+                //    if (commandes == "")
+                //    {
+                //        commandes = wakeup.AffirmationPrecedente;
+                //        wakeup.AffirmationPrecedente = "";
+                //    }
+                //    bot.GetMessage(commandes);
+                //    string resultat = bot.Identifier();
+                //    bot.Executer(resultat , wakeup);
+                //}
 
 
 
                 //if (informations.ToLower() == "exit")
                 //    break;
-
+                #endregion
             }
-            Console.WriteLine("Merci d'avoir utiliser Karl AI , A la prochaine");
-            Console.ReadLine();
         }
     }
 }

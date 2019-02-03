@@ -38,7 +38,7 @@ namespace KarlAI.Models
             // Speak a string.  
             Console.WriteLine(tts);
             synth.Speak(tts);
-            Console.ReadKey();
+            Console.WriteLine();
         }
         public void GetMessage(string texte)
         {
@@ -127,6 +127,7 @@ namespace KarlAI.Models
                 {
                     if (demandecut[i].ToLower() == "spotify")
                     {
+                        bool installSpotify = false;
                         //Verifie si on repond a la reponse d'installation
                         if (demandecut[i - 1] == "install")
                         {
@@ -141,12 +142,16 @@ namespace KarlAI.Models
                         }
                         catch (System.ComponentModel.Win32Exception)
                         {
-                            Console.WriteLine("Vous n'avez pas Spotify d'installer , souhaiter vous l'installer ?");
+                            installSpotify = true;
+                        }
+                        if(installSpotify)
+                        {
+                            Talk("You don't have spotify. Do you want to install it ? ");
                             wakeup.EnAttenteDuneReponse = true;
                             wakeup.AffirmationPrecedente = "hey carl install spotify.";
-
+                            installSpotify = false;
+                            break;
                         }
-
                     }
                     if (demandecut[i].ToLower() == "google")
                     {
@@ -155,6 +160,7 @@ namespace KarlAI.Models
                             if (demandecut[i + 1] == "")
                             {
                                 Console.WriteLine("You have to specify what to search.");
+                                Talk("You have to specify what to search. ");
                                 break;
                             }
                             else
@@ -163,6 +169,10 @@ namespace KarlAI.Models
                             Process.Start("http://www.google.com");
 
                         break;
+                    }
+                    if(demandecut[i].ToLower() =="porn")
+                    {
+                        Process.Start("http://www.pornhub.com");
                     }
                 }
             }
@@ -202,5 +212,12 @@ namespace KarlAI.Models
 
         }
 
+        private void VeuxTuExecuterSpotify(Wakeup wakeup)
+        {
+            Talk("You don't have spotify. Do you want to install it ? ");
+            wakeup.EnAttenteDuneReponse = true;
+            wakeup.AffirmationPrecedente = "hey carl install spotify.";
+            return;
+        }
     }
 }
