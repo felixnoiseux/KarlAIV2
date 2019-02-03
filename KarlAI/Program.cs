@@ -8,6 +8,7 @@ using Microsoft.CognitiveServices.Speech.Audio;
 using KarlAI.Models;
 using System.Diagnostics;
 
+
 namespace KarlAI
 {
     class Program
@@ -27,7 +28,7 @@ namespace KarlAI
             using (var recognizer = new SpeechRecognizer(config))
             {
                 Console.WriteLine("Say something...");
-
+                
                 // Performs recognition. RecognizeOnceAsync() returns when the first utterance has been recognized,
                 // so it is suitable only for single shot recognition like command or query. For long-running
                 // recognition, use StartContinuousRecognitionAsync() instead.
@@ -41,9 +42,14 @@ namespace KarlAI
                     if (wakeup.Ecouter(informations))
                     {
                         commandes = wakeup.AvoirCommandes(informations);
+                        if (commandes == "")
+                        {
+                            commandes = wakeup.AffirmationPrecedente;
+                            wakeup.AffirmationPrecedente = "";
+                        }
                         bot.GetMessage(commandes);
                          resultat = bot.Identifier();
-                        bot.Executer(resultat);
+                        bot.Executer(resultat, wakeup);
                     }
                 }
                 else if (result.Reason == ResultReason.NoMatch)
@@ -91,11 +97,15 @@ namespace KarlAI
                 if (wakeup.Ecouter(informations))
                 {
                     string commandes = wakeup.AvoirCommandes(informations);
+                    if (commandes == "")
+                    {
+                        commandes = wakeup.AffirmationPrecedente;
+                        wakeup.AffirmationPrecedente = "";
+                    }
                     bot.GetMessage(commandes);
                     string resultat = bot.Identifier();
-                    bot.Executer(resultat);
+                    bot.Executer(resultat , wakeup);
                 }
-                informations = Console.ReadLine();
 
 
 

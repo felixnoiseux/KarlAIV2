@@ -15,6 +15,10 @@ namespace KarlAI.Models
         string contenu = "";
         public string magicWord { get; set; }
 
+        //Proprietes pour faire fonctionner le oui , lorsque l'AI pose une question
+        public bool EnAttenteDuneReponse { get; set; }
+        public string AffirmationPrecedente { get; set; }
+
         #region Fonctions
         /// <summary>
         /// Permet de savoir si on demande quelque chose a Karl
@@ -23,6 +27,23 @@ namespace KarlAI.Models
         /// <returns>True si on a dit le magicWord</returns>
         public bool Ecouter(string content)
         {
+            //Verifie si on repond a une question de l'ai
+            if(EnAttenteDuneReponse)
+            {
+                if (content.ToLower().Split(' ')[0] == "yes" ||
+                    content.ToLower().Split(' ')[0] == "yes.")
+                {
+                    content = AffirmationPrecedente;
+                    EnAttenteDuneReponse = false;
+                }
+                else
+                {
+                    EnAttenteDuneReponse = false;
+                    return false;
+                }
+                    
+            }
+
             if (content.Length < 8)
                 return false;
             else if (!VerifierHey(content))

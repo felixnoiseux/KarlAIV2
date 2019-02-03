@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Speech.Synthesis;
 
 namespace KarlAI.Models
 {
@@ -17,18 +18,28 @@ namespace KarlAI.Models
         //
         // Variables
         //
+        SpeechSynthesizer synth = new SpeechSynthesizer();
 
         public string message { get; set; }
         public string Bibliotheque { get; set; }
+        private string OrdreChoisi { get; set; }
 
-        List<string> Ordre = new List<string> { "dit", "fait", "peux-tu", "pourrais-tu", "mets", "demarre", "démare", "open", "open,", "start" };
-        List<string> useless = new List<string> { "le", "la", "les", "nous", "mon", "mon", "ma", "mes", "nos" };
+        List<string> Ordre = new List<string> { "dit", "fait", "peux-tu", "pourrais-tu", "mets", "demarre", "démare", "open", "open,", "start", "search", "install" };
+        List<string> useless = new List<string> { "le", "la", "les", "nous", "mon", "mon", "ma", "mes", "nos", "on" };
 
 
         //
         // Méthodes
         //
-
+        public void Talk(string tts)
+        {
+            // Configure the audio output.   
+            synth.SetOutputToDefaultAudioDevice();
+            // Speak a string.  
+            Console.WriteLine(tts);
+            synth.Speak(tts);
+            Console.ReadKey();
+        }
         public void GetMessage(string texte)
         {
             string messageSanspoint = "";
@@ -47,7 +58,7 @@ namespace KarlAI.Models
                 Bibliotheque = "Question";
                 message = texte;
             }
-            
+
         }
 
         public string Identifier()
@@ -62,15 +73,20 @@ namespace KarlAI.Models
                 if (bibliochoisi == "")
                 {
 
-                    for (int i2 = 0; i2 < Ordre.Count - 1; i2++)
+                    for (int i2 = 0; i2 < Ordre.Count; i2++)
                     {
                         if (messagecut[i].ToLower() == Ordre[i2])
                         {
                             bibliochoisi = "Ordre";
+                            OrdreChoisi = Ordre[i2];
                             next = true;
                             continue;
                         }
                     }
+                }
+                if (Bibliotheque == "Question")
+                {
+                    bibliochoisi = "Question";
                 }
                 if (bibliochoisi != "" && next == false)
                 {
@@ -100,7 +116,7 @@ namespace KarlAI.Models
         // Comprendre le string et faire une action 
         //
 
-        public void Executer(string demande)
+        public void Executer(string demande, Wakeup wakeup)
         {
 
             string username = Environment.UserName;
@@ -111,6 +127,13 @@ namespace KarlAI.Models
                 {
                     if (demandecut[i].ToLower() == "spotify")
                     {
+                        //Verifie si on repond a la reponse d'installation
+                        if (demandecut[i - 1] == "install")
+                        {
+                            Process.Start("https://www.spotify.com/ca-fr/download/windows/");
+                            wakeup.EnAttenteDuneReponse = false;
+                            break;
+                        }
 
                         try
                         {
@@ -118,17 +141,66 @@ namespace KarlAI.Models
                         }
                         catch (System.ComponentModel.Win32Exception)
                         {
-                            Console.WriteLine("Vous n'avez pas Spotify d'installer.");
+                            Console.WriteLine("Vous n'avez pas Spotify d'installer , souhaiter vous l'installer ?");
+                            wakeup.EnAttenteDuneReponse = true;
+                            wakeup.AffirmationPrecedente = "hey carl install spotify.";
+
                         }
 
                     }
                     if (demandecut[i].ToLower() == "google")
                     {
-                        Process.Start("http://www.google.com");
+                        //Verifier l'ordre qu'on a donner pour demarrer google.
+                        if (OrdreChoisi == "search")
+                            if (demandecut[i + 1] == "")
+                            {
+                                Console.WriteLine("You have to specify what to search.");
+                                break;
+                            }
+                            else
+                                Process.Start("https://www.google.com/search?q=" + demandecut[i + 1]);
+                        else
+                            Process.Start("http://www.google.com");
+
+                        break;
                     }
                 }
-
             }
+            else if (Bibliotheque == "Question")
+            {
+                for (int i = 0; i <= demandecut.Length - 1; i++)
+                {
+                    if (demandecut[i].ToLower() == "temps")
+                    {
+                        Talk("This is what I found on the net");
+                        Process.Start("https://www.theweathernetwork.com");
+                    }
+                    else if (demandecut[i].ToLower() == "who")
+                    {
+                        for (int i2 = 0; i2 < demandecut.Length - 1; i2++)
+                        {
+                            if (demandecut[i2].ToLower() == "are")
+                            {
+                                for (int i3 = 0; i3 < demandecut.Length; i3++)
+                                {
+                                    if (demandecut[i3].ToLower() == "you" || demandecut[i3].ToLower() == "you?")
+                                    {
+                                        Talk("I am Carl, an Artificial Intelligence designed by David Daoud and Félix Noiseux, two students studying in computer science at Saint-Hyacinthe.");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (true)
+                    {
+
+                    }
+                }
+                Bibliotheque = "";
+            }
+
+
         }
+
     }
 }
