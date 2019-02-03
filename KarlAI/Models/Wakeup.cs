@@ -12,6 +12,7 @@ namespace KarlAI.Models
     public class Wakeup
     {
         string wordBuilder = "";
+        string contenu = "";
         public string magicWord { get; set; }
 
         #region Fonctions
@@ -22,8 +23,13 @@ namespace KarlAI.Models
         /// <returns>True si on a dit le magicWord</returns>
         public bool Ecouter(string content)
         {
+            if (content.Length < 8)
+                return false;
+            else if (!VerifierHey(content))
+                return false;
 
             bool droitEspace = true;
+            contenu = content;
             wordBuilder = "";
             for (int i = 0; i < content.Length; i++)
             {
@@ -40,6 +46,39 @@ namespace KarlAI.Models
                 wordBuilder += content[i];
             }
 
+            //Refaire une verification pour Hey Carl , Hey Caught , Hey Girl
+            string carl = "";
+            for (int i = 4; i <= 1000; i++)
+            {
+                if (contenu[i] == ' ')
+                {
+                    break;
+                }
+                carl += contenu[i];
+                carl = carl.ToLower();
+            }
+            string name = "carl";
+            int count = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                if (count == 2)
+                {
+                    wordBuilder = "hey carl";
+                    break;
+                }
+                for (int i2 = 0; i2 < carl.Length ; i2++)
+                {
+                    if (name[i] == carl[i2])
+                    {
+                        count++;
+                    }
+                }
+                if (count == 2)
+                {
+                    wordBuilder = "hey carl";
+                    break;
+                }
+            }
             if (wordBuilder.ToLower() == magicWord.ToLower())
                 return true;
             else
@@ -54,11 +93,27 @@ namespace KarlAI.Models
         public string AvoirCommandes(string content)
         {
             wordBuilder = "";
-            for (int i = magicWord.Length +1; i < content.Length; i++)
+            for (int i = magicWord.Length + 1; i < content.Length; i++)
             {
                 wordBuilder += content[i];
             }
             return wordBuilder;
+        }
+        private bool VerifierHey(string content)
+        {
+            string mot = "";
+            for (int i = 0; i < content.Length; i++)
+            {
+                if (content[i] == ' ')
+                    break;
+
+                mot += content[i];
+            }
+
+            if (mot.ToLower() == "hey")
+                return true;
+            else
+                return false;
         }
         #endregion
 

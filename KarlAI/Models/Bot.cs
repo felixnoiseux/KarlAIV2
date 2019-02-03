@@ -21,7 +21,7 @@ namespace KarlAI.Models
         public string message { get; set; }
         public string Bibliotheque { get; set; }
 
-        List<string> Ordre = new List<string> { "dit", "fait", "peux-tu", "pourrais-tu", "mets", "demarre", "démare" ,"open" , "open,","start"};
+        List<string> Ordre = new List<string> { "dit", "fait", "peux-tu", "pourrais-tu", "mets", "demarre", "démare", "open", "open,", "start" };
         List<string> useless = new List<string> { "le", "la", "les", "nous", "mon", "mon", "ma", "mes", "nos" };
 
 
@@ -31,7 +31,23 @@ namespace KarlAI.Models
 
         public void GetMessage(string texte)
         {
-            message = texte;
+            string messageSanspoint = "";
+            int count = 0;
+            count = texte.Length;
+            if (texte[count - 1] == '.')
+            {
+                for (int i = 0; i < texte.Length - 1; i++)
+                {
+                    messageSanspoint += texte[i];
+                }
+                message = messageSanspoint;
+            }
+            else if (texte[count - 1] == '?')
+            {
+                Bibliotheque = "Question";
+                message = texte;
+            }
+            
         }
 
         public string Identifier()
@@ -86,8 +102,7 @@ namespace KarlAI.Models
 
         public void Executer(string demande)
         {
-            ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.WorkingDirectory = @"%ProgramFiles%";
+
             string username = Environment.UserName;
             string[] demandecut = demande.Split(' ');
             if (Bibliotheque == "Ordre")
@@ -101,11 +116,11 @@ namespace KarlAI.Models
                         {
                             Process.Start("C:\\Users\\" + username + "\\AppData\\Roaming\\Spotify\\Spotify.exe");
                         }
-                        catch(System.ComponentModel.Win32Exception)
+                        catch (System.ComponentModel.Win32Exception)
                         {
                             Console.WriteLine("Vous n'avez pas Spotify d'installer.");
                         }
-                        
+
                     }
                     if (demandecut[i].ToLower() == "google")
                     {

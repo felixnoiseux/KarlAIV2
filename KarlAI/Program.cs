@@ -82,20 +82,20 @@ namespace KarlAI
                                              "2.|Help| Affiche les commandes que carl peut executer\n" +
                                              "3. |Exit| Quitte l'IA\n");
 
-            Process.Start("http://www.google.com");
+
             while (true)
             {
 
                 //RecognizeSpeechAsync(wakeup , bot).Wait();
-                //string informations = Console.ReadLine();
-                //if (wakeup.Ecouter(informations))
-                //{
-                //    string commandes = wakeup.AvoirCommandes(informations);
-                //    bot.GetMessage(commandes);
-                //    string resultat = bot.Identifier();
-                //    bot.Executer(resultat);
-                //}
-                //informations = Console.ReadLine();
+                string informations = Console.ReadLine();
+                if (wakeup.Ecouter(informations))
+                {
+                    string commandes = wakeup.AvoirCommandes(informations);
+                    bot.GetMessage(commandes);
+                    string resultat = bot.Identifier();
+                    bot.Executer(resultat);
+                }
+                informations = Console.ReadLine();
 
 
 
