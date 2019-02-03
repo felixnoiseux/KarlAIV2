@@ -21,7 +21,7 @@ namespace KarlAI.Models
         public string message { get; set; }
         public string Bibliotheque { get; set; }
 
-        List<string> Ordre = new List<string> { "dit", "fait", "peux-tu", "pourrais-tu", "mets", "demarre", "démare" };
+        List<string> Ordre = new List<string> { "dit", "fait", "peux-tu", "pourrais-tu", "mets", "demarre", "démare" ,"open" , "open,","start"};
         List<string> useless = new List<string> { "le", "la", "les", "nous", "mon", "mon", "ma", "mes", "nos" };
 
 
@@ -46,9 +46,9 @@ namespace KarlAI.Models
                 if (bibliochoisi == "")
                 {
 
-                    for (int i2 = 0; i2 < Ordre.Capacity - 1; i2++)
+                    for (int i2 = 0; i2 < Ordre.Count - 1; i2++)
                     {
-                        if (messagecut[i] == Ordre[i2])
+                        if (messagecut[i].ToLower() == Ordre[i2])
                         {
                             bibliochoisi = "Ordre";
                             next = true;
